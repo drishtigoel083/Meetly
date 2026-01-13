@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import mongoose from "mongoose"
 import path from "path"
 import cors from "cors"
+import { connectDB } from "./lib/db.js"
 
 dotenv.config();
 const app = express();
@@ -35,8 +36,17 @@ if(process.env.NODE_ENV === "production"){
     });
 }
 
+//start server
+const startServer = async() => {
+    try {
+        await connectDB();
+        app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+    } catch (error) {
+        console.log("Error starting server:", error);
+               
+    }
+}
+
+startServer();
 
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-})
